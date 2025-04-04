@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Title -->
+    <title>Pokedex</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='24px' height='24px' stroke-width='1.5' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' color='%23000000'%3E%3Cpath d='M3 3.6V20.4C3 20.7314 3.26863 21 3.6 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6Z' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3Cpath d='M6 6L6 16' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3Cpath d='M10 6V9' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3Cpath d='M14 6V13' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3Cpath d='M18 6V11' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3C/svg%3E"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Bulma CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
+
+    <!-- Custom CSS-->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+
+  <body>
+    <header class="my-5 my-6">
+      <h1 class="title has-text-centered is-1">Pokedex</h1>
+      <nav
+        class="navbar is-flex is-justify-content-space-evenly"
+        id="navbar_main"
+        role="navigation"
+        aria-label="main navigation"
+      >
+        <a class="navbar-item" id="nav-item-home"> Home </a>
+        <a class="navbar-item" id="nav-item-type"> Types </a>
+        <a class="navbar-item" id="nav-item-team"> Teams </a>
+        <a class="navbar-item" id="nav-item-add-team"> Add Team </a>
+      </nav>
+    </header>
+
+    <main
+      id="app"
+      class="container is-flex is-align-item-center is-flex-wrap-wrap is-justify-content-space-evenly my-6"
+    >
+  </main>
+  
+
+    <!-- Template pokemon card -->
+    <template id="pokemonCardTemplate">
+      <div class="card mb-6 has-text-centered pt-4 my-6" data-type="pokemon">
+        <a slot="pkm_card_link">
+          <div class="card-image">
+            <img slot="pkm_img" src="" />
+          </div>
+          <div class="card-content">
+            <p slot="pkm_card_content"></p>
+          </div>
+        </a>
+      </div>
+    </template>
+
+    <!-- Template modal pokemon -->
+    <template id="pokemonModalTemplate">
+      <div class="modal pokemon-modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <h2 class="modal-card-title" slot="pkm_name"></h2>
+            <i class="fa fa-window-close close"></i>
+          </header>
+          <section
+            class="modal-card-body is-flex is-flex-direction-row is-align-content-center is-align-items-center"
+          >
+            <div class="mr-4">
+              <img slot="pkm_img_modal" class="pkm_img_modal" />
+            </div>
+            <div class="modal-card-content pkm_stats_modal">
+              <h4 class="mb-4">Statistiques</h4>
+              <p slot="pkm_types" class="modal_team_types"></p>
+              <div slot="pkm_hp">
+                <div class="is-flex is-justify-content-space-start">
+                  <div>PV:</div>
+                  <div class="pokemon-hp ml-1"></div>
+                </div>
+                <progress
+                  class="progress is-danger hp-progress"
+                  max="255"
+                ></progress>
+              </div>
+              <div slot="pkm_attack">
+                <div class="is-flex is-justify-content-space-start">
+                  <div>Attaque:</div>
+                  <div class="pokemon-atk ml-1"></div>
+                </div>
+                <progress
+                  class="progress is-danger atk-progress"
+                  max="255"
+                ></progress>
+              </div>
+              <div slot="pkm_defense">
+                <div class="is-flex is-justify-content-space-start">
+                  <div>Défense:</div>
+                  <div class="pokemon-def ml-1"></div>
+                </div>
+                <progress
+                  class="progress is-danger def-progress"
+                  max="255"
+                ></progress>
+              </div>
+              <div slot="pkm_special_attack">
+                <div class="is-flex is-justify-content-space-start">
+                  <div>Attaque Spé:</div>
+                  <div class="pokemon-atk_spe ml-1"></div>
+                </div>
+                <progress
+                  class="progress is-danger atk_spe-progress"
+                  max="255"
+                ></progress>
+              </div>
+              <div slot="pkm_special_defense">
+                <div class="is-flex is-justify-content-space-start">
+                  <div>Défense Spé:</div>
+                  <div class="pokemon-def_spe ml-1"></div>
+                </div>
+                <progress
+                  class="progress is-danger def_spe-progress"
+                  max="255"
+                ></progress>
+              </div>
+              <div slot="pkm_speed">
+                <div class="is-flex is-justify-content-space-start">
+                  <div>Vitesse:</div>
+                  <div class="pokemon-speed ml-1"></div>
+                </div>
+                <progress
+                  class="progress is-danger speed-progress"
+                  max="255"
+                ></progress>
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot is-flex">
+            <div class="add_team_container">
+              <form id="form_add_pkm_team">
+                <select class="select">
+                </select>
+                <button class="button btn_add_team">Add To Team</button>
+              </form>
+            </div>
+            <div class="buttons">
+              <button class="button close">Retour</button>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </template>
+
+    <!-- Template type -->
+    <template id="typesTemplate">
+      <div class="is-flex is-justify-content-center my-6" data-type="types-container">
+      </div>
+    </template>
+
+    <!-- Template modal type -->
+    <template id="typePokemonModalTemplate">
+      <div class="modal type-pokemon-modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <h2 class="modal-card-title" slot="type-name"></h2>
+            <i class="fa fa-window-close close"></i>
+          </header>
+          <section class="modal-card-body is-flex is-flex-wrap-wrap is-justify-content-space-evenly">
+          </section>
+        </div>
+      </div>
+    </template>
+
+    <!-- Template team -->
+    <template id="teamTemplate">
+      <section class="container has-text-centered my-6" id="team-{{id}}">
+        <div class="mb-1">
+          <h2 class="team-name title"></h2>
+          <p class="team-description subtitle my-5"></p>
+        </div>
+        <div class="imgContainer image is-flex is-justify-content-center my-5">
+          
+        </div>
+        <div class="container btnContainer">
+          <button class="button btnModalTeam">Administrer</button>
+        </div>
+      </section>
+    </template>
+    
+    <!-- Template modal team -->
+    <template id="teamModalTemplate">
+      <div class="modal team-modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <header class="modal-card-head">
+            <h2 class="modal-card-title team_name"></h2>
+            <i class="fa fa-window-close close"></i>
+          </header>
+          <div class="modal-card-body">
+            <p class="team_description"></p>
+            <table class="table has-text-centered">
+              <thead>
+                <tr>
+                  <th><abbr title="numero">N°</abbr></th>
+                  <th><abbr title="name">Name</abbr></th>
+                  <th><abbr title="hp">PV</abbr></th>
+                  <th><abbr title="atk">Atk</abbr></th>
+                  <th><abbr title="def">Def</abbr></th>
+                  <th><abbr title="atk_spe">Atk Spe</abbr></th>
+                  <th><abbr title="def_spe">Def Spe</abbr></th>
+                  <th><abbr title="speed">Vit</abbr></th>
+                  <th><abbr title="types">Types</abbr></th>
+                  <th><abbr title="options">Options</abbr></th>
+                </tr>
+              </thead>
+              <tbody id="tbody_team">
+              </tbody>
+            </table>
+          </div>
+          <footer class="modal-card-foot">
+            <div class="buttons">
+              <button class="button close">Retour</button>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </template>
+
+    <!-- Template Add team -->
+    <template id="addTeamModalTemplate">
+      <div class="modal" id="add_team_modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <header class="modal-card-head">
+            <h2 class="modal-card-title team_name">Ajouter une team</h2>
+            <i class="fa fa-window-close close"></i>
+          </header>
+          <div class="modal-card-body">
+            <form id="form_team_modal">
+              <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                  <input class="input" type="text" name="name" placeholder="Name of the team" required>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Description</label>
+                <div class="control">
+                  <input class="input" type="text" name="description" placeholder="Facultatif">
+                </div>
+              </div>
+              <div class="control">
+                <button type="submit" class="button is-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </template>
+
+        <script type="module" src="/assets/js/index.js"></script>
+
+
+
+
+  </body>
+</html>
